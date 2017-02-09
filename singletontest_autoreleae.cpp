@@ -7,13 +7,32 @@ class Singleton
 public:
 	static Singleton* GetInstance();
 	
+	#if 0
 	static void destroy()
 	{
 		cout<<"destroy func"<<endl;
 		delete pInstance;
 	}
+	#endif
 	
 private:
+	class AutoRelease
+	{
+	public:
+		AutoRelease()
+		{
+			cout<<"AutoRelease() "<<endl;
+		}
+		~AutoRelease()
+		{
+			if(pInstance != NULL)
+			{
+				delete pInstance;
+				cout<<"~~AutoRelease()"<<endl;
+			}
+		}
+	};
+	
 	Singleton()
 	{
 		cout<<"construct Singleton()"<<endl;
@@ -26,9 +45,11 @@ private:
 
 private:
 	static Singleton* pInstance;
+	static AutoRelease _autoRelease;
 };
 
 Singleton* Singleton::pInstance = NULL;
+Singleton::AutoRelease Singleton::_autoRelease;
 
  Singleton* Singleton:: GetInstance()
 {
@@ -49,7 +70,7 @@ int main(int argc,char* argv[])
 	Singleton *p3 = Singleton::GetInstance();
 	cout<<"p1 = "<<p1<<", p2 = "<<p2<<" p3 = "<<p3<<endl;
 
-	Singleton::destroy();
+	//Singleton::destroy();
 
 	return 0;
 }
