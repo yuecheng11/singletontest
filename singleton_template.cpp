@@ -15,7 +15,7 @@ public:
 };
 
 template<typename T>
-class Singlton
+class Singleton
 {
 private:
 	class AutoRelease
@@ -37,7 +37,7 @@ private:
 public:
 	static T* getInstance();
 private:
-	Singlton()
+	Singleton()
 	{
 		cout<<"Singlton()"<<endl;
 	}
